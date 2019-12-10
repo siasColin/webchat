@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kingim.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="kingim.model.User" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="role_code" property="roleCode" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="sign" property="sign" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  	<resultMap type="kingim.model.User" id="JoinMap" extends="BaseResultMap">
+		<id property="id" column="id" />
+	</resultMap>
+
+  <select id="findSNSUserByUserID" resultType="kingim.vo.SNSUser">
+      SELECT
+          tu.id,
+          tu.nick_name as username,
+          tu.avatar,
+          tu.sign
+      FROM
+          t_user tu
+      WHERE
+          id = #{userID}
+  </select>
+
+    <update id="updateUserSign" parameterType="kingim.model.User">
+        UPDATE t_user SET sign = #{sign} WHERE id = #{id}
+    </update>
+    <update id="uploadAvatar" parameterType="kingim.model.User">
+        UPDATE t_user SET avatar = #{avatar} WHERE id = #{id}
+    </update>
+    
+    <select id="findUserList" parameterType="map" resultMap="BaseResultMap">
+      SELECT
+          tu.id,
+          tu.user_name,
+          tu.password,
+          tu.nick_name,
+          tu.gender,
+          tu.avatar,
+          tu.email,
+          tu.phone,
+          tu.role_code,
+          tu.version,
+          tu.sign
+          <if test="userId != null and userId !=''">,(select count(1) from friend where type_id in (select id from friend_type where user_id = #{userId}) and friend_id = tu.id) as count</if>
+          
+          
+          <if test="groupId != null and groupId !=''">,(select count(1)  from group_user where group_id = #{groupId} and user_id = tu.id) as count</if>
+      FROM
+          t_user tu
+      WHERE
+          1 = 1
+      <if test="nickName != null and nickName !=''"> and tu.nick_name like '%${nickName}%'</if>
+      <if test="orgCode != null and orgCode !=''"> and tu.systemuserid in (select id from ssd_sys_user where ORGUNIT_CODE = #{orgCode})</if>
+      <if test="userId != null and userId !=''"> and tu.id  != #{userId}</if>
+   </select>
+   
+   <select id="findOrgUnitList" parameterType="map" resultType="kingim.utils.ZtreeNode">
+        select a.id,a.pId,a.`level`,CONCAT(a.`name`,'(',a.userSum,')') As name from (SELECT
+        a.ORGUNIT_CODE AS id,
+        a.PARENT_CODE AS pId,
+        b.AREA_LEVEL AS level,
+        (select count(1) from t_user tuser,ssd_sys_user sysuser where tuser.systemuserid = sysuser.id and sysuser.orgunit_code = a.ORGUNIT_CODE) As userSum,
+        
+        a.ORGUNIT_NAME AS name
+        FROM
+        ssd_sys_orgunit a
+        LEFT JOIN ssd_sys_area b ON a.AREA_CODE = b.AREA_CODE
+        where 1=1
+        AND
+        b.AREA_LEVEL &gt;= 1
+        AND 
+        b.AREA_LEVEL &lt; 5
+        order by sortnum,a.ORGUNIT_CODE) a where a.userSum > 0
+   </select>
+   
+   <select id="finduserIsexistGroup" parameterType="map" resultType="java.util.Map">
+        select * from group_user where group_id = #{groupId} and user_id = #{userId}
+   </select>
+   
+   <insert id="addUser" parameterType="map">
+        insert into t_user(user_name,password,nick_name,gender,avatar,role_code,sign,systemuserid)
+        values(#{loginId},#{loginPwd},#{userName},'0','/images/boy-17.png','1','个性签名',#{id})
+   </insert>
+	
+</mapper>

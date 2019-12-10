@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kingim.dao.MessageMapper" >
+    <insert id="saveFriendMessage" parameterType="java.util.Map">
+        INSERT INTO friend_message (from_user_id, to_user_id, content, send_time,is_del,is_back)
+        VALUES
+            (#{fromId},#{toId},#{content},CURRENT_TIMESTAMP,0,0)
+    </insert>
+    <insert id="saveGroupMessage" parameterType="java.util.Map">
+        INSERT INTO group_message (user_id, group_id, content, send_time,is_del,is_back)
+        VALUES
+            (#{fromId},#{groupId},#{content},CURRENT_TIMESTAMP,0,0)
+    </insert>
+
+    <select id="getFriendMsgTotal" resultType="java.lang.Integer">
+        SELECT
+            COUNT( id ) total
+        FROM
+            friend_message
+        WHERE
+            (( from_user_id = #{mineId} AND to_user_id = #{friendId} )
+            OR ( from_user_id = #{friendId} AND to_user_id = #{mineId} ))
+            AND is_del = 0 AND is_back = 0
+    </select>
+    <select id="getGroupMsgTotal" resultType="java.lang.Integer">
+        SELECT
+            COUNT( id ) total
+        FROM
+            group_message
+        WHERE
+            group_id = #{friendId,jdbcType=INTEGER}
+            AND is_del = 0 AND is_back = 0
+    </select>
+
+    <select id="getFriendMsgHis" resultType="java.util.Map">
+        SELECT
+            fm.from_user_id AS id,
+            ( SELECT nick_name FROM t_user WHERE id = fm.from_user_id ) AS username,
+            ( SELECT avatar FROM t_user WHERE id = fm.from_user_id ) AS avatar,
+            fm.content,
+            fm.send_time
+        FROM
+            friend_message fm
+        WHERE
+        (( fm.from_user_id = #{mineId,jdbcType=INTEGER} AND fm.to_user_id = #{friendId,jdbcType=INTEGER} )
+        OR ( fm.from_user_id = #{friendId,jdbcType=INTEGER} AND fm.to_user_id = #{mineId,jdbcType=INTEGER} ))
+        AND fm.is_del = 0 AND fm.is_back = 0
+        ORDER BY fm.send_time DESC LIMIT #{stratRow,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+    </select>
+    <select id="getGroupMsgHis" resultType="java.util.Map">
+        SELECT
+            gm.user_id AS id,
+            ( SELECT nick_name FROM t_user WHERE id = gm.user_id ) AS username,
+            ( SELECT avatar FROM t_user WHERE id = gm.user_id ) AS avatar,
+            gm.content,
+            gm.send_time
+        FROM
+            group_message gm
+        WHERE
+            gm.group_id = #{friendId,jdbcType=INTEGER}
+            AND gm.is_del = 0
+            AND gm.is_back = 0
+        ORDER BY
+            gm.send_time DESC
+            LIMIT #{stratRow,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+    </select>
+</mapper>

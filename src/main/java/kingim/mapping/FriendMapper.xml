@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kingim.dao.FriendMapper" >
+  <resultMap id="BaseResultMap" type="kingim.model.Friend" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="friend_id" property="friendId" jdbcType="INTEGER" />
+    <result column="build_time" property="buildTime" jdbcType="TIMESTAMP" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  	<resultMap type="kingim.model.Friend" id="Friend_User_Map" extends="BaseResultMap">
+		<association property="friendInfo" javaType="kingim.model.User"
+			resultMap="kingim.dao.UserMapper.JoinMap" />
+	</resultMap>
+
+    <insert id="addFriend" parameterType="java.util.Map">
+        INSERT INTO friend ( user_id, friend_id, build_time, type_id )
+        VALUES
+            ( #{fromId}, #{toId}, NOW(), #{typeId} )
+    </insert>
+    <select id="getFriend" resultType="java.util.Map">
+        select remark,build_time from friend WHERE user_id = #{userId} AND friend_id = #{friendId}
+    </select>
+    <select id="getMineGroup" resultType="java.util.Map">
+        SELECT remark,join_time FROM group_user WHERE group_id =#{groupId} AND user_id = #{uId}
+    </select>
+    <select id="getFriendByTypeId" resultType="java.util.Map">
+        SELECT
+            fd.id,
+            fd.type_id,
+            tu.nick_name,
+            tu.avatar,
+            fd.friend_id,
+            fd.remark
+        FROM
+            friend fd
+            LEFT JOIN t_user tu ON fd.friend_id = tu.id
+        WHERE
+        fd.user_id = #{userId}
+        <if test="typeId != null and typeId != -1">
+            AND fd.type_id = #{typeId}
+        </if>
+        ORDER BY fd.build_time DESC
+    </select>
+    <select id="friendTypeCount" resultType="java.util.Map">
+        SELECT
+            ft.id,
+            ft.type_name,
+            (
+            SELECT
+                COUNT( fd.id )
+            FROM
+                friend fd
+            WHERE
+                fd.type_id = ft.id
+                AND fd.user_id = ft.user_id
+            ) AS total
+        FROM
+            friend_type ft
+        WHERE
+            ft.user_id = #{userId}
+    </select>
+    <update id="updateFriendType">
+        UPDATE friend SET type_id =#{typeId} WHERE id =#{friendId}
+    </update>
+    
+    <update id="updateRemark">
+        UPDATE friend SET remark =#{remark} WHERE id =#{id}
+    </update>
+    
+    <delete id="deleteFriendById">
+        delete from friend where id = #{id}
+    </delete>
+    
+    <delete id="delFriendByFriendId">
+        delete from friend where id in (select id from friend where type_id in (select id from friend_type where user_id = #{userId}) and friend_id=#{friendId})
+    </delete>
+
+    <select id="findExistFriend" resultType="java.lang.Integer">
+        select COUNT(id) total from friend WHERE user_id = #{fromId} AND friend_id = #{toId}
+    </select>
+
+    <select id="findSysUserList" resultType="java.util.Map">
+        select ID as id,LOGIN_ID as loginId,LOGIN_PWD as loginPwd,USER_NAME as userName from ssd_sys_user where deleted = '1'
+    </select>
+
+    <select id="findUserBySysUserIdList" resultType="java.util.Map">
+        select id from t_user where systemuserid = #{id}
+    </select>
+</mapper>

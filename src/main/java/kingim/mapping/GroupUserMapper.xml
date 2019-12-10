@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kingim.dao.GroupUserMapper" >
+  <resultMap id="BaseResultMap" type="kingim.model.GroupUser" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="join_time" property="joinTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <select id="getSimpleMemberByGroupId" resultType="java.lang.String">
+      SELECT
+          gu.user_id
+      FROM
+          group_user gu
+      WHERE
+          gu.group_id = #{groupId}
+  </select>
+  <select id="getMemberByGroupId" resultType="kingim.vo.SNSUser">
+        SELECT
+            tu.id,
+            tu.nick_name as username,
+            tu.avatar,
+            tu.sign,
+            gu.remark,
+            gu.id as groupUserId
+        FROM
+            t_user tu,
+            group_user gu
+        WHERE
+            tu.id = gu.user_id
+            AND gu.group_id = #{groupId}
+  </select>
+  
+  <delete id="deleteGroupUser">
+       delete from group_user where group_id = #{id}
+  </delete>
+  
+  <delete id="deleteGroupUserById">
+       delete from group_user where id = #{id}
+  </delete>
+  
+  <insert id="addGroupUser">
+       INSERT INTO group_user (user_id, group_id,join_time,remark)
+        VALUES( #{userId},#{groupId},NOW(),#{remark})
+  </insert>
+  
+  <update id="updateGroupRemark">
+       update group_user set remark = #{remark} where id = #{id}
+  </update>
+</mapper>

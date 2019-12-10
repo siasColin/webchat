@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kingim.dao.FriendTypeMapper" >
+  <resultMap id="BaseResultMap" type="kingim.model.FriendType" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="type_id" property="id" jdbcType="INTEGER" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="build_time" property="buildTime" jdbcType="TIMESTAMP" />
+    <result column="is_default" property="isDefault" jdbcType="INTEGER" />
+  </resultMap>
+
+
+   <resultMap id="FriendListMap" extends="BaseResultMap" type="kingim.model.FriendType">
+ 		<collection property="friends" javaType="list" ofType="kingim.model.Friend" resultMap="kingim.dao.FriendMapper.Friend_User_Map">
+ 		</collection>
+   </resultMap>
+ 
+	<!-- 根据userId查询好友分组列表   -->
+	<select id="getFriendTypeByUserId" resultMap="FriendListMap">
+SELECT
+			friend_type.type_name,
+			friend.friend_id,
+			friend_type.id AS type_id,
+			u.avatar,
+			u.sign,
+			CASE
+				WHEN friend.remark ='' THEN
+					u.nick_name
+				WHEN friend.remark IS NULL THEN
+					u.nick_name
+				WHEN friend.remark = 'null' THEN
+					u.nick_name
+				ELSE
+					friend.remark
+			END AS nick_name
+		FROM
+			friend_type
+		left JOIN friend ON friend.type_id = friend_type.id
+		left JOIN t_user u ON friend.friend_id = u.id
+		WHERE
+			friend_type.user_id = #{userId}
+		ORDER BY friend_type.build_time ASC
+	</select>
+
+	<insert id="addFriendType" parameterType="kingim.model.FriendType" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO friend_type ( type_name, user_id, build_time, is_default )
+		VALUES
+			(#{typeName},#{userId},CURRENT_TIMESTAMP,#{isDefault})
+	</insert>
+	
+	<delete id="deleteFriendTypeById">
+	     delete from friend_type where id = #{id}
+	</delete>
+	
+	<select id="findFriendTypeById" resultMap="BaseResultMap">
+	     select id,type_name,user_id,is_default from friend_type where id = #{id}
+	</select>
+	
+	<update id="updateFriendTypeName">
+	     update friend_type set type_name = #{typeName} where id = #{id}
+	</update>
+  
+</mapper>

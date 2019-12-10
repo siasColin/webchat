@@ -1,0 +1,129 @@
+.main{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: auto;
+}
+.Grouping{
+    width: 85%;
+    max-height: 60%;
+    border: 1px solid #dddddd;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    overflow: auto;
+    margin: 20px auto 0;
+}
+.Grouping>li{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dddddd;
+    cursor: pointer;
+}
+.Grouping>li:last-of-type{
+    border-bottom: none;
+}
+.Grouping>.li_active{
+    background: #419488;
+    color: #fff;
+}
+.Grouping>li>span{
+    font-size: 16px;
+    margin-left: 3%;
+}
+.Grouping>li>i{
+    padding: 2px 3px;
+    background: #777777;
+    margin-right: 3%;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+}
+.Grouping>.li_active>i{
+    background: #fff;
+    color: #457ab2;
+}
+.addgroup{
+    display:block;
+    width: 85%;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin: 20px auto 0;
+}
+.FriendDetails{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+.FriendDetails>li{
+    width: 32%;
+    border: 1px solid #bbbbbb;
+    font-size: 0;
+    padding: 10px 0;
+    margin:0 0.5%;
+    margin-bottom: 10px;
+}
+.HeadPortrait{
+    display: inline-block;
+    width: 40%;
+    text-align: center;
+    vertical-align: middle;
+}
+.HeadPortrait>img{
+    width: 60%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.FriendInformation{
+    display: inline-block;
+    width: 60%;
+    font-size: 14px;
+    vertical-align: middle;
+}
+.FriendInformation>p{
+    width: 90%;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: bold;
+}
+.FriendInformation>p:nth-child(2){
+    font-size: 12px;
+    font-weight: 500;
+}
+.FriendInformation #replaceinput{
+    border-color: #777777;
+    border-radius: 5px;
+    width: 40%;
+}
+.SetGrouping{
+    width: 100%;
+    margin: 3% 0;
+}
+.SetGrouping>div{
+    width: 55%;
+}
+.SetGrouping>button{
+    background: #58c383;
+}
+.layui-input, .layui-select, .layui-textarea{
+    height: 22px !important;
+}
+.layui-form-select dl{
+    top: 22px !important;
+}
+.layui-form-select dl dd, .layui-form-select dl dt{
+    line-height: 22px !important;
+}

@@ -1,0 +1,30 @@
+article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, figure, section, legend, textarea, p, blockquote, th, td, input, select, textarea, button { margin: 0; padding: 0 }
+body{font-family:"Microsoft Yahei",Arial,Helvetica,sans-serif;background-color: #fff;color:#424242;margin: 0 auto; font-size: 16px;line-height: 26px;}
+table{border-collapse:collapse;border-spacing:0}
+ul,ol,dd,dt,dl{list-style-type:none;}
+a{color:#333;text-decoration: none;-webkit-touch-callout: none;-webkit-user-select: none;}
+input,img{padding:0;}
+i,em{font-style:normal;}
+:focus{outline: none}
+.clearfix:after { display: block; clear: both; visibility: hidden; height: 0; overflow: hidden; content: "."; }
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+/* ::-webkit-scrollbar-thumb {
+    background-color: #c8cbce;
+    background-clip: padding-box;
+    border: 1px solid #278bcc;
+    min-height: 28px;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-track-piece {
+    background-color: #c8cbce;
+} */
+::selection {
+    background: #6BB9FF;
+    text-shadow: none;
+    color: #FFFFFF;
+}

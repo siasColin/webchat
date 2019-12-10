@@ -1,0 +1,26 @@
+.page{
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ebedf1;
+}
+.layui-nav .layui-this:after {
+    content: '';
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, .4);
+}
+.layui-nav-bar{
+    display: none;
+}
+.header{
+    background: #009688 !important;
+}
+.head_nav{
+    padding: 0;
+    margin-left: 8.33333333%;
+    width: 83.3333%;
+}
