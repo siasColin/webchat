@@ -29,12 +29,12 @@
                         <button type="button" class="layui-btn" id="syncUser">同步好友</button>
                     </div>
 
-                    <div class="layui-col-sm3 tree_box">
+                    <%--<div class="layui-col-sm3 tree_box" >
                         <div class="tree">
                             <ul id="orgtree" class="ztree" style="overflow: auto;"></ul>
                         </div>
-                    </div>
-                    <div class="layui-col-sm9 search_main">
+                    </div>--%>
+                    <div class="layui-col-sm9 search_main" style="left: 10%;">
                         <ul class="searchResult" id="searchResult">
                         </ul>
                         <div id="page" style="margin-right: 10px;float: right;"></div>
@@ -178,10 +178,10 @@
         };
 
        	$(document).ready(function() {
-       	    initZTree();
+       	    /*initZTree();*/
        	});
 
-       	function initZTree() {
+       	/*function initZTree() {
        	    $.ajax({
        	        url : "/index/queryOrgListZtree",//请求的action路径
        	        type : "post",
@@ -245,7 +245,7 @@
 	    		        	  })
             	          }
             })
-       	};
+       	};*/
         function addFriend(uid,avatar,username){
             parent.layui.layim.add({
                 type: 'friend' //friend：申请加好友、group：申请加群
