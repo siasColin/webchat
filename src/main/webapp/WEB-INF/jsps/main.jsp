@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <html>
-<title>在线会商系统</title>
+<title>即时通讯平台</title>
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" href="/layim/css/layui.css" media="all"/>
@@ -14,7 +14,7 @@
     <div id="headerNav" class="active">
         <h1>
             <img src="/images/logoico.png" style="width: 40px;margin-top: 0px;">
-            <span style="display: inline-block;vertical-align: middle;font-size: 26px;font-family: '时尚中黑简体';line-height: 58px;color: white;">在线会商系统</span>
+            <span style="display: inline-block;vertical-align: middle;font-size: 26px;font-family: '时尚中黑简体';line-height: 58px;color: white;">即时通讯平台</span>
         </h1>
         <ul id="nav">
             <li>

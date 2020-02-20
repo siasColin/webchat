@@ -299,10 +299,14 @@ public class FriendController {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("userId", userId);
         params.put("friendId", friendId);
-        int updateNum = friendService.delFriendByFriendId(params);
-        if(updateNum > 0){
-        	 returnMap.put("code",0);
-             returnMap.put("msg","删除成功");
+        try{
+            int updateNum = friendService.delFriendByFriendId(params);
+            if(updateNum > 0){
+                returnMap.put("code",0);
+                returnMap.put("msg","删除成功");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return returnMap;
     }

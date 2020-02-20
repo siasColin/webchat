@@ -95,5 +95,17 @@ public class UserServiceImpl  extends BaseServiceImpl<User> implements UserServi
 		return userMapper.finduserIsexistGroup(map);
 	}
 
-
+    @Override
+    public int saveUser(User user) {
+        String avatar = user.getAvatar();
+        if(user.getAvatar() != null && !user.getAvatar().trim().equals("")){
+        }else{
+            if(user.getGender() == 0){
+                user.setAvatar("/images/boy-01.png");
+            }else{
+                user.setAvatar("/images/girl-01.png");
+            }
+        }
+        return save(user);
+    }
 }

@@ -77,7 +77,7 @@
     </delete>
     
     <delete id="delFriendByFriendId">
-        delete from friend where id in (select id from friend where type_id in (select id from friend_type where user_id = #{userId}) and friend_id=#{friendId})
+        delete from friend where (user_id = #{userId} and friend_id=#{friendId}) or (user_id = #{friendId} and friend_id=#{userId})
     </delete>
 
     <select id="findExistFriend" resultType="java.lang.Integer">

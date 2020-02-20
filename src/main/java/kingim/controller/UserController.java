@@ -96,6 +96,21 @@ public class UserController {
 		session.invalidate();
 		return "redirect:/index/login";
 	}
+	@RequestMapping("/userRegisterPage")
+	public String addFriendTypePage(){
+		return "userRegister";
+	}
+	@RequestMapping(value = "userRegister",produces = "application/json; charset=utf-8")
+	public @ResponseBody Object userRegister(User user) {
+		Map<String,Object> returnMap = new HashMap<String,Object>();
+		returnMap.put("code",-1);
+		returnMap.put("msg","注册用户失败！");
+		//保存入库
+		userService.saveUser(user);
+		returnMap.put("code",0);
+		returnMap.put("msg","注册成功！");
+		return returnMap;
+	}
 
 	/**
 	 * 给layim提供初始化数据服务，包括个人信息、好友列表信息、群组列表信息

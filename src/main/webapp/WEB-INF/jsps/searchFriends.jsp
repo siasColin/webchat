@@ -193,7 +193,7 @@
        	    		        		  if(parseInt(result.data[i].count) > 0){
        	    		        	           html += "<button type='button' class='layui-btn layui-btn-sm' style='background: #c8cbce;' onclick='delFriend("+result.data[i].id+",this);'>移除</button></div></li>";
        	    		        	      }else{
-       	    		        	           html += "<button type='button' class='layui-btn layui-btn-sm'>+好友</button></div></li>";
+                                          html += "<button type='button' class='layui-btn layui-btn-sm' onclick='addFriend("+result.data[i].id+",\""+result.data[i].avatar+"\",\""+result.data[i].nickName+"\");'>+好友</button></div></li>";
        	    		        	      }
        	    		        		  
        	    		        	  }
@@ -250,8 +250,34 @@
                    })
         	  })
         });
-        
 
+        function addFriend(uid,avatar,username){
+            parent.layui.layim.add({
+                type: 'friend' //friend：申请加好友、group：申请加群
+                ,username: username //好友昵称，若申请加群，参数为：groupname
+                ,avatar: avatar //头像
+                ,submit: function(group, remark, index){ //一般在此执行Ajax和WS，以通知对方
+//                    console.log(group); //获取选择的好友分组ID，若为添加群，则不返回值
+//                    console.log(remark); //获取附加信息
+                    var userId = $("#userId",window.parent.document).val();
+                    $.ajax({
+                        async:false,
+                        type: "POST",
+                        url: '/friend/sendAddFriend',
+                        data:{"from":userId,"from_group":group,"remark":remark,"uid":uid},
+                        dataType: "json",
+                        success: function(res){
+                            if(res.code != 0){
+                                return layui.layer.msg(res.msg);
+                            }
+                            parent.layer.close(index); //关闭改面板
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        }
+                    });
+                }
+            });
+        }
        	
        	function delFriend(friendId,obj){
        		var userId = $("#userId",window.parent.document).val();

@@ -26,7 +26,7 @@
                         </div>
                         <button type="button" class="layui-btn" id="search">搜索</button>
                         
-                        <button type="button" class="layui-btn" id="syncUser">同步好友</button>
+                        <%--<button type="button" class="layui-btn" id="syncUser">同步好友</button>--%>
                     </div>
 
                     <%--<div class="layui-col-sm3 tree_box" >
@@ -151,7 +151,7 @@
         });
         
         
-        var setting = {
+        /*var setting = {
         	    view: {
         	        dblClickExpand: false,//双击节点时，是否自动展开父节点的标识
         	        showLine: true,//是否显示节点之间的连线
@@ -175,7 +175,7 @@
         	    callback : {
         	        onClick : zTreeOnclick
         	    }
-        };
+        };*/
 
        	$(document).ready(function() {
        	    /*initZTree();*/
@@ -275,7 +275,6 @@
         }
         function delFriend(friendId,obj){
             var userId = $("#userId",window.parent.document).val();
-            debugger;
             layer.confirm('你确定要移除用户么?', {icon: 3,offset: 't', title:'提示'}, function(index){
                 $.ajax({
                     async:false,

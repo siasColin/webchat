@@ -45,4 +45,6 @@ public interface UserService {
 	 * @return
 	 */
 	List<Map<String,Object>> finduserIsexistGroup(Map<String,Object> map);
+
+	int saveUser(User user);
 }
