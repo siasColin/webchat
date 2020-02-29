@@ -42,6 +42,7 @@ public class LLWS {
 	@OnOpen
 	public void onOpen(Session session,@PathParam("userId") Integer userId) {
 		String jsonString="{'content':'online','id':"+userId+",'type':'onlineStatus'}";
+		session.setMaxIdleTimeout(1800000);
 		for (String value : mapSU.values()) {
 			try {
 				mapUS.get(value).getBasicRemote().sendText(jsonString);
